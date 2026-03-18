@@ -1,6 +1,6 @@
-# 🌿 FloraLink — Smart Plant Monitoring System
+# 🌿 Smart Plant Monitoring System
 
-A full-stack IoT plant monitoring system with ASP.NET Core backend, React dashboard, and ESP32 sensor integration.
+IoT plant monitoring system with ASP.NET Core backend, React dashboard, and ESP32 sensor integration.
 
 ---
 
@@ -21,31 +21,6 @@ floralink-dashboard/        ← React + Vite frontend
     services/api.js         ← Axios API client
     context/AuthContext.jsx ← JWT auth state
 
-IoT/
-  esp32_sensor.ino          ← Arduino sketch for ESP32
-```
-
----
-
-## Quick Start
-
-### Backend
-
-```bash
-cd FloraLink_Project
-
-# Restore packages
-dotnet restore
-
-# Create initial migration
-dotnet ef migrations add InitialCreate --project . --startup-project .
-
-# Apply migration (creates DB + seeds plant types)
-dotnet ef database update
-
-# Run API
-dotnet run
-```
 
 API runs at: `https://localhost:7001`  
 Swagger UI: `https://localhost:7001/swagger`
@@ -60,6 +35,8 @@ npm run dev
 
 Dashboard runs at: `http://localhost:5173`
 
+Email assigned => demo@floralink.io
+Password => demo1234
 ---
 
 ## API Endpoints
@@ -84,40 +61,9 @@ Dashboard runs at: `http://localhost:5173`
 
 ---
 
-## IoT Device Setup
-
-1. Open `IoT/esp32_sensor.ino` in Arduino IDE
-2. Install libraries: `ArduinoJson`, `DHT sensor library`, `WiFi`
-3. Set your WiFi credentials and API URL
-4. Set `SENSOR_ID` to match the SensorId you enter when adding a plant
-5. Flash to ESP32
-
-The device sends data every 5 minutes. The backend automatically:
-- Calculates health score
-- Triggers alerts if thresholds are breached
-- Auto-waters if moisture is critically low
-
----
-
-## Seeded Plant Types
-
-| Type | Moisture Range | Temp Range | Critical Moisture |
-|------|---------------|------------|-------------------|
-| Cactus | 20–40% | 20–35°C | 10% |
-| Tropical | 60–80% | 18–30°C | 40% |
-| Herb | 50–70% | 15–28°C | 30% |
-| Fern | 70–90% | 15–25°C | 50% |
-| Succulent | 25–50% | 15–32°C | 15% |
-
----
-
 ## Health Score Formula
 
-```
 HealthScore = 100 - moistureDeviation - temperatureDeviation
 
-deviation = 0 if within ideal range
-deviation = (distance_from_range / range_boundary) * 50 if outside
-```
 
 Status mapping: 80–100 → Happy | 60–80 → OK | 40–60 → Thirsty | 0–40 → Stressed
