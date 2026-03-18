@@ -12,8 +12,17 @@ using Microsoft.OpenApi.Models;
 var builder = WebApplication.CreateBuilder(args);
 
 // ── Database ──────────────────────────────────────────────────────────────────
+var connectionString = builder.Configuration.GetConnectionString("DefaultConnection");
+var usePostgres = Environment.GetEnvironmentVariable("USE_POSTGRES") == "true" ||
+                  (connectionString != null && connectionString.StartsWith("Host="));
+
 builder.Services.AddDbContext<FloraLinkDbContext>(options =>
-    options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
+{
+    if (usePostgres)
+        options.UseNpgsql(connectionString);
+    else
+        options.UseSqlServer(connectionString);
+});
 
 // ── Repositories ──────────────────────────────────────────────────────────────
 builder.Services.AddScoped<IUserRepository, UserRepository>();
@@ -89,7 +98,15 @@ var app = builder.Build();
 using (var scope = app.Services.CreateScope())
 {
     var db = scope.ServiceProvider.GetRequiredService<FloraLinkDbContext>();
-    db.Database.Migrate();
+    try
+    {
+        db.Database.Migrate();
+    }
+    catch
+    {
+        // Tables may already exist — ensure DB is created and continue
+        db.Database.EnsureCreated();
+    }
     DatabaseSeeder.Seed(db);
 }
 
