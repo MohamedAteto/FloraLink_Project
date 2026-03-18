@@ -1,0 +1,16 @@
+# .NET build output
+FloraLink_Project/bin/
+FloraLink_Project/obj/
+FloraLink_Project/Migrations/
+
+# User secrets / local config
+FloraLink_Project/appsettings.Development.json
+
+# Node
+floralink-dashboard/node_modules/
+floralink-dashboard/dist/
+
+# Misc
+build_output.txt
+*.user
+.DS_Store
