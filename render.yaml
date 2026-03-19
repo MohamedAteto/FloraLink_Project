@@ -1,0 +1,21 @@
+services:
+  - type: web
+    name: floralink-api
+    runtime: dotnet
+    buildCommand: dotnet publish FloraLink_Project/PlantMonitorAPI.csproj -c Release -o out
+    startCommand: dotnet out/PlantMonitorAPI.dll
+    envVars:
+      - key: ASPNETCORE_ENVIRONMENT
+        value: Production
+      - key: USE_POSTGRES
+        value: "true"
+      - key: ConnectionStrings__DefaultConnection
+        sync: false
+      - key: Jwt__Key
+        sync: false
+      - key: Jwt__Issuer
+        value: FloraLinkAPI
+      - key: Jwt__Audience
+        value: FloraLinkClient
+      - key: AllowedOrigins
+        sync: false
