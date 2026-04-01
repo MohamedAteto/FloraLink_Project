@@ -3,8 +3,6 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 #nullable disable
 
-#pragma warning disable CA1814 // Prefer jagged arrays over multidimensional
-
 namespace FloraLink.Migrations
 {
     /// <inheritdoc />
@@ -25,7 +23,11 @@ namespace FloraLink.Migrations
                     MaxMoisture = table.Column<double>(type: "float", nullable: false),
                     MinTemperature = table.Column<double>(type: "float", nullable: false),
                     MaxTemperature = table.Column<double>(type: "float", nullable: false),
-                    CriticalMoistureThreshold = table.Column<double>(type: "float", nullable: false)
+                    CriticalMoistureThreshold = table.Column<double>(type: "float", nullable: false),
+                    Category = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Emoji = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    IsAIGenerated = table.Column<bool>(type: "bit", nullable: false),
+                    WateringFrequency = table.Column<string>(type: "nvarchar(max)", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -167,18 +169,6 @@ namespace FloraLink.Migrations
                         principalTable: "Plants",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
-                });
-
-            migrationBuilder.InsertData(
-                table: "PlantTypes",
-                columns: new[] { "Id", "CriticalMoistureThreshold", "Description", "MaxMoisture", "MaxTemperature", "MinMoisture", "MinTemperature", "Name" },
-                values: new object[,]
-                {
-                    { 1, 10.0, "Desert succulent, very drought tolerant", 40.0, 35.0, 20.0, 20.0, "Cactus" },
-                    { 2, 40.0, "Tropical plants needing high humidity", 80.0, 30.0, 60.0, 18.0, "Tropical" },
-                    { 3, 30.0, "Kitchen herbs like basil and mint", 70.0, 28.0, 50.0, 15.0, "Herb" },
-                    { 4, 50.0, "Shade-loving moisture-hungry ferns", 90.0, 25.0, 70.0, 15.0, "Fern" },
-                    { 5, 15.0, "Drought-tolerant succulent plants", 50.0, 32.0, 25.0, 15.0, "Succulent" }
                 });
 
             migrationBuilder.CreateIndex(

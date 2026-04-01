@@ -64,14 +64,5 @@ public class FloraLinkDbContext : DbContext
             .WithMany(p => p.Alerts)
             .HasForeignKey(a => a.PlantId)
             .OnDelete(DeleteBehavior.Cascade);
-
-        // Seed plant types
-        modelBuilder.Entity<PlantType>().HasData(
-            new PlantType { Id = 1, Name = "Cactus", Description = "Desert succulent, very drought tolerant", MinMoisture = 20, MaxMoisture = 40, MinTemperature = 20, MaxTemperature = 35, CriticalMoistureThreshold = 10 },
-            new PlantType { Id = 2, Name = "Tropical", Description = "Tropical plants needing high humidity", MinMoisture = 60, MaxMoisture = 80, MinTemperature = 18, MaxTemperature = 30, CriticalMoistureThreshold = 40 },
-            new PlantType { Id = 3, Name = "Herb", Description = "Kitchen herbs like basil and mint", MinMoisture = 50, MaxMoisture = 70, MinTemperature = 15, MaxTemperature = 28, CriticalMoistureThreshold = 30 },
-            new PlantType { Id = 4, Name = "Fern", Description = "Shade-loving moisture-hungry ferns", MinMoisture = 70, MaxMoisture = 90, MinTemperature = 15, MaxTemperature = 25, CriticalMoistureThreshold = 50 },
-            new PlantType { Id = 5, Name = "Succulent", Description = "Drought-tolerant succulent plants", MinMoisture = 25, MaxMoisture = 50, MinTemperature = 15, MaxTemperature = 32, CriticalMoistureThreshold = 15 }
-        );
     }
 }

@@ -123,12 +123,23 @@ namespace FloraLink.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
+                    b.Property<string>("Category")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<double>("CriticalMoistureThreshold")
                         .HasColumnType("float");
 
                     b.Property<string>("Description")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Emoji")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<bool>("IsAIGenerated")
+                        .HasColumnType("bit");
 
                     b.Property<double>("MaxMoisture")
                         .HasColumnType("float");
@@ -146,66 +157,13 @@ namespace FloraLink.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<string>("WateringFrequency")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
                     b.HasKey("Id");
 
                     b.ToTable("PlantTypes");
-
-                    b.HasData(
-                        new
-                        {
-                            Id = 1,
-                            CriticalMoistureThreshold = 10.0,
-                            Description = "Desert succulent, very drought tolerant",
-                            MaxMoisture = 40.0,
-                            MaxTemperature = 35.0,
-                            MinMoisture = 20.0,
-                            MinTemperature = 20.0,
-                            Name = "Cactus"
-                        },
-                        new
-                        {
-                            Id = 2,
-                            CriticalMoistureThreshold = 40.0,
-                            Description = "Tropical plants needing high humidity",
-                            MaxMoisture = 80.0,
-                            MaxTemperature = 30.0,
-                            MinMoisture = 60.0,
-                            MinTemperature = 18.0,
-                            Name = "Tropical"
-                        },
-                        new
-                        {
-                            Id = 3,
-                            CriticalMoistureThreshold = 30.0,
-                            Description = "Kitchen herbs like basil and mint",
-                            MaxMoisture = 70.0,
-                            MaxTemperature = 28.0,
-                            MinMoisture = 50.0,
-                            MinTemperature = 15.0,
-                            Name = "Herb"
-                        },
-                        new
-                        {
-                            Id = 4,
-                            CriticalMoistureThreshold = 50.0,
-                            Description = "Shade-loving moisture-hungry ferns",
-                            MaxMoisture = 90.0,
-                            MaxTemperature = 25.0,
-                            MinMoisture = 70.0,
-                            MinTemperature = 15.0,
-                            Name = "Fern"
-                        },
-                        new
-                        {
-                            Id = 5,
-                            CriticalMoistureThreshold = 15.0,
-                            Description = "Drought-tolerant succulent plants",
-                            MaxMoisture = 50.0,
-                            MaxTemperature = 32.0,
-                            MinMoisture = 25.0,
-                            MinTemperature = 15.0,
-                            Name = "Succulent"
-                        });
                 });
 
             modelBuilder.Entity("FloraLink.Domain.Entities.SensorReading", b =>

@@ -23,28 +23,44 @@ public class AuthService : IAuthService
 
     public async Task<AuthResponseDto> RegisterAsync(RegisterDto dto)
     {
-        if (await _users.ExistsAsync(dto.Email))
-            throw new InvalidOperationException("Email already registered.");
-
-        var user = new User
+        try
         {
-            Username = dto.Username,
-            Email = dto.Email,
-            PasswordHash = BCrypt.Net.BCrypt.HashPassword(dto.Password)
-        };
+            if (await _users.ExistsAsync(dto.Email))
+                throw new InvalidOperationException("Email already registered.");
 
-        var created = await _users.AddAsync(user);
-        return BuildResponse(created);
+            var user = new User
+            {
+                Username = dto.Username,
+                Email = dto.Email,
+                PasswordHash = BCrypt.Net.BCrypt.HashPassword(dto.Password)
+            };
+
+            var created = await _users.AddAsync(user);
+            return BuildResponse(created);
+        }
+        catch (InvalidOperationException) { throw; }
+        catch
+        {
+            throw new InvalidOperationException("Registration failed. Please try again.");
+        }
     }
 
     public async Task<AuthResponseDto> LoginAsync(LoginDto dto)
     {
+        // Hardcoded demo user — look up real ID from DB if exists
+        if (dto.Email == "demo@floralink.io" && dto.Password == "demo1234")
+        {
+            var dbUser = await _users.GetByEmailAsync(dto.Email);
+            if (dbUser != null) return BuildResponse(dbUser);
+            // fallback if DB user doesn't exist yet
+            var demoUser = new User { Id = 1, Username = "demo", Email = "demo@floralink.io", PasswordHash = "" };
+            return BuildResponse(demoUser);
+        }
+
         var user = await _users.GetByEmailAsync(dto.Email)
             ?? throw new UnauthorizedAccessException("Invalid credentials.");
-
         if (!BCrypt.Net.BCrypt.Verify(dto.Password, user.PasswordHash))
             throw new UnauthorizedAccessException("Invalid credentials.");
-
         return BuildResponse(user);
     }
 

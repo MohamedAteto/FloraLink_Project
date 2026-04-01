@@ -16,4 +16,15 @@ public class PlantTypeRepository : IPlantTypeRepository
 
     public Task<PlantType?> GetByIdAsync(int id) =>
         _db.PlantTypes.FindAsync(id).AsTask();
+
+    public Task<PlantType?> FindByNameAsync(string name) =>
+        _db.PlantTypes.FirstOrDefaultAsync(p =>
+            p.Name.ToLower() == name.ToLower());
+
+    public async Task<PlantType> AddAsync(PlantType plantType)
+    {
+        _db.PlantTypes.Add(plantType);
+        await _db.SaveChangesAsync();
+        return plantType;
+    }
 }

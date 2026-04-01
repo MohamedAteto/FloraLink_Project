@@ -15,5 +15,11 @@ public class PlantType
     // Critical threshold — triggers auto-watering
     public double CriticalMoistureThreshold { get; set; }
 
+    // Extended fields
+    public string Category { get; set; } = "General";
+    public string Emoji { get; set; } = "🌱";
+    public bool IsAIGenerated { get; set; } = false;
+    public string WateringFrequency { get; set; } = string.Empty;
+
     public ICollection<Plant> Plants { get; set; } = new List<Plant>();
 }
